@@ -34,7 +34,7 @@
 
   <Target Name="Build" DependsOnTargets="Clean">
     <MSBuild Projects="@(ProjectsToBuild)"
-             Properties="NuGetExePath=$(SolutionDir)tools\nuget.exe;
+             Properties="NuGetExePath=$(SolutionDir)tools\NuGet.exe;
                          PackagesDir=$(PackagesDir);
                          Configuration=Release;
                          OutputPath=$(ArtefactsDir);
