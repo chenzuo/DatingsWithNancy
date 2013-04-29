@@ -1,0 +1,1 @@
+C:\Windows\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe /clp:v=m;Summary /flp:logfile=reports/msbuild.log;v=diag DatingsWithNancy.proj

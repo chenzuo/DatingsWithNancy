@@ -1,0 +1,9 @@
+language: c
+
+install:
+  - sudo apt-get install mono-complete
+  - mozroots --import --sync
+  - export EnableNuGetPackageRestore=true
+
+script:
+  - xbuild build/DatingsWithNancy.proj

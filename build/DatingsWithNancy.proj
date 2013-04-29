@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<Project ToolsVersion="4.0" DefaultTargets="Test" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <PropertyGroup>
+	<SolutionDir>$(MSBuildProjectDirectory)\..\</SolutionDir>
+	<ArtefactsDir>$(SolutionDir)build\artefacts\</ArtefactsDir>
+	<ReportsDir>$(SolutionDir)build\reports\</ReportsDir>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(OS)' == 'Windows_NT'">
+    <PackagesDir>$(SolutionDir)lib\packages</PackagesDir>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(OS)' != 'Windows_NT'">
+    <PackagesDir>$(SolutionDir)lib\packages\</PackagesDir>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectsToBuild Include="$(SolutionDir)src\**\*.csproj" />
+  </ItemGroup>
+
+  <Target Name="Clean">
+    <RemoveDir Directories="$(ArtefactsDir)" Condition="Exists('$(ArtefactsDir)')" />
+    <MakeDir Directories="$(ArtefactsDir)" Condition="!Exists('$(ArtefactsDir)')" />
+    <MakeDir Directories="$(SolutionDir)build\reports\" Condition="!Exists('$(SolutionDir)build\reports\')" />
+  </Target>
+
+  <Target Name="Test" DependsOnTargets="Clean;Build">
+    <CreateItem Include="$(ArtefactsDir)*.Tests.dll" >
+      <Output TaskParameter="Include" ItemName="TestAssemblies"/>
+    </CreateItem>
+    <xunit Assemblies="@(TestAssemblies)" Html="$(ReportsDir)xunit.report.html" />
+  </Target>
+
+  <Target Name="Build" DependsOnTargets="Clean">
+    <MSBuild Projects="@(ProjectsToBuild)"
+             Properties="NuGetExePath=$(SolutionDir)tools\nuget.exe;
+                         PackagesDir=$(PackagesDir);
+                         Configuration=Release;
+                         OutputPath=$(ArtefactsDir);
+                         SolutionDir=$(SolutionDir)" />
+  </Target>
+
+  <UsingTask TaskName="Xunit.Runner.MSBuild.xunit" AssemblyFile="$(SolutionDir)lib\packages\xunit.1.9.1\lib\net20\xunit.runner.msbuild.dll" />
+</Project>
