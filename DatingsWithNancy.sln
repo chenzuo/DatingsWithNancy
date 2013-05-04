@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NancyAppServer", "src\apps\NancyAppServer\NancyAppServer.csproj", "{4760C210-6D5F-4FD3-BD4E-F876AADD5A3E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NancyAppHost", "src\apps\NancyAppHost\NancyAppHost.csproj", "{4760C210-6D5F-4FD3-BD4E-F876AADD5A3E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NancyAppServer.Tests", "src\tests\NancyAppServer.Tests\NancyAppServer.Tests.csproj", "{13E0093E-DA47-4F51-90F2-45BE872F501B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NancyAppHost.Tests", "src\tests\NancyAppHost.Tests\NancyAppHost.Tests.csproj", "{13E0093E-DA47-4F51-90F2-45BE872F501B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
