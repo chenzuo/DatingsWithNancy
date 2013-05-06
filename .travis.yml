@@ -4,7 +4,7 @@ install:
   - echo "deb http://debian.meebey.net/experimental/mono /" > pgdg.list
   - sudo mv pgdg.list /etc/apt/sources.list.d/
   - sudo apt-get update
-  - sudo apt-get install mono-runtime mono-runtime-sgen libmono-2.0-1 mono-utils mono-jay mono-devel mono-mcs mono-csharp-shell mono-2.0-gac mono-4.0-gac mono-2.0-service mono-4.0-service libmono-cil-dev
+  - sudo apt-get -y --force-yes install mono-runtime mono-runtime-sgen libmono-2.0-1 mono-utils mono-jay mono-devel mono-mcs mono-csharp-shell mono-2.0-gac mono-4.0-gac mono-2.0-service mono-4.0-service libmono-cil-dev
   - mozroots --import --sync
   - export EnableNuGetPackageRestore=true
 
