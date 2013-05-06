@@ -9,7 +9,16 @@
     {
         public static void Main(string[] args)
         {
-            IsResetEventAlreadyExists = EventWaitHandle.TryOpenExisting(WAIT_HANDLE_NAME, out ResetEvent);
+            try
+            {
+                ResetEvent = EventWaitHandle.OpenExisting(WAIT_HANDLE_NAME);
+                
+                IsResetEventAlreadyExists = true;
+            }
+            catch
+            {
+                IsResetEventAlreadyExists = false;
+            }
 
             new Program(new MockHost()).Go(args);
         }
