@@ -68,6 +68,9 @@
   <ItemGroup>
     <Compile Include="BaseAppHost.cs" />
     <Compile Include="MockHost.cs" />
+    <Compile Include="Program.CLAP.cs">
+      <DependentUpon>Program.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

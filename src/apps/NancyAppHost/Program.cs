@@ -5,7 +5,7 @@
     using System.Threading.Tasks;
     using CLAP;
 
-    public class Program
+    public partial class Program
     {
         public static void Main(string[] args)
         {
@@ -23,7 +23,6 @@
             new Program(new MockHost()).Go(args);
         }
 
-        private const int HTTP_LISTENER_DEFAULT_PORT = 8888;
         private const string WAIT_HANDLE_NAME = "Global\\NancyAppHost.8888";
 
         private static EventWaitHandle ResetEvent;
@@ -62,24 +61,15 @@
             Parser.Run(args, this);
         }
 
-        #region CLAP Verbs
-
-        [Verb(Description = "Run HTTP listener on specified port number")]
-        private void Run([DefaultValue(HTTP_LISTENER_DEFAULT_PORT)]int port)
+        partial void Run(int port)
         {
             Console.WriteLine("Running HTTP listener on {0} port...", port);
-
-            if (IsRunning) throw new InvalidOperationException("HTTP listener already runned");
-
-            Task.Factory
-                .StartNew(delegate
-                {
-                    HttpHost.StartHttpListener(port);
-                }
-                , TaskCreationOptions.LongRunning)
-                .Wait();
-            
             Console.WriteLine("Use \"abort\" command line switch for terminating (i.e. NancyAppHost.exe abort)");
+
+            if (IsRunning)
+                throw new InvalidOperationException("HTTP listener already runned");
+
+            StrartHttpListenerInSeparateThread(port);
 
             if (!_isSut)
             {
@@ -89,12 +79,24 @@
             Console.WriteLine("HTTP listener is aborted.");
         }
 
-        [Verb(Description = "Terminate HTTP listener")]
-        private void Abort()
+        private void StrartHttpListenerInSeparateThread(int port)
         {
-            if (!IsRunning) throw new InvalidOperationException("HTTP listener is not runned");
+            Task.Factory
+                .StartNew(delegate
+                {
+                    HttpHost.StartHttpListener(port);
+                }
+                , TaskCreationOptions.LongRunning)
+                .Wait();
+        }
+
+        partial void Abort()
+        {
+            if (!IsRunning)
+                throw new InvalidOperationException("HTTP listener is not runned");
 
             Console.WriteLine("Trying abort HTTP listener...");
+            
             HttpHost.TerminateHttpListener();
 
             if (!_isSut)
@@ -103,14 +105,12 @@
             }
         }
 
-        [Global(Description = "Print full exception's callstack on any fault", Aliases = "verbose")]
-        private void VerboseExceptions()
+        partial void VerboseExceptions()
         {
             _isVerboseExceptions = true;
         }
 
-        [Error]
-        private void HandleError(ExceptionContext context)
+        partial void HandleError(ExceptionContext context)
         {
             context.ReThrow = _isSut;
 
@@ -129,12 +129,9 @@
             }
         }
 
-        [Empty, Help]
-        private void Help(string help)
+        partial void Help(string help)
         {
             Console.WriteLine(help);
         }
-
-        #endregion
     }
 }

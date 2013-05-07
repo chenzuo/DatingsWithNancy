@@ -5,14 +5,14 @@
 
     public class MockHost : BaseAppHost
     {
-        public override void StartHttpListener(int port)
+        public override async void StartHttpListener(int port)
         {
             Console.WriteLine("Using MockHost");
-                    
-            //if (string.Empty == await DoWork())
-            //{
-            //    throw new ApplicationException("Nooooooooooooooo...!");
-            //}
+
+            if (string.Empty == await DoWork())
+            {
+                throw new ApplicationException("Nooooooooooooooo...!");
+            }
         }
 
         public override void TerminateHttpListener()
@@ -20,11 +20,11 @@
             Console.WriteLine("Goodbye");
         }
 
-        //async Task<string> DoWork()
-        //{
-        //    await Task.Delay(10000);
+        async Task<string> DoWork()
+        {
+            await Task.Delay(10000);
 
-        //    return string.Empty;
-        //}
+            return string.Empty;
+        }
     }
 }
