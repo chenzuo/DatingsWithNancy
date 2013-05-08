@@ -1,12 +1,42 @@
 ﻿namespace NancyAppHost
 {
+    using System;
+    using System.Configuration;
+    using System.Linq;
+    using Nancy.Bootstrapper;
+
     public abstract class BaseAppHost
     {
-        public abstract void StartNancyHost(int port);
-        
-        private string ResolveNancyBootstrapperAssembly()
+        protected internal INancyBootstrapper Bootstrapper
         {
-            return string.Empty;
+            get
+            {
+                try
+                {
+                    var typeName = GetFirstTypeNameFromConfiguration();
+                    var type = Type.GetType(typeName, false);
+
+                    return Activator.CreateInstance(type) as INancyBootstrapper;
+                }
+                catch
+                {
+                    return null;
+                }
+            }
+        }
+
+        public abstract void StartNancyHost(int port);
+
+        internal virtual string GetFirstTypeNameFromConfiguration()
+        {
+            try
+            {
+                return ConfigurationManager.AppSettings.GetValues("NancyBootstrapper").FirstOrDefault();
+            }
+            catch
+            {
+                return default(string);
+            }
         }
     }
 }

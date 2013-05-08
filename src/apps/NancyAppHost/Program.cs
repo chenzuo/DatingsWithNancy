@@ -9,7 +9,7 @@
     {
         public static void Main(string[] args)
         {
-            new Program(new MockHost()).Go(args);
+            new Program(new KatanaHost()).Go(args);
         }
 
         private EventWaitHandle _abortEvent;
