@@ -9,9 +9,6 @@
         [Verb(Description = "Run HTTP listener on specified port number")]
         partial void Run([DefaultValue(HTTP_LISTENER_DEFAULT_PORT)]int port);
 
-        [Verb(Description = "Terminate HTTP listener")]
-        partial void Abort();
-
         [Global(Description = "Print full exception's callstack on any fault", Aliases = "verbose")]
         partial void VerboseExceptions();
 

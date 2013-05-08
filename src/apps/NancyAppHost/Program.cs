@@ -9,54 +9,28 @@
     {
         public static void Main(string[] args)
         {
-            try
-            {
-                ResetEvent = EventWaitHandle.OpenExisting(WAIT_HANDLE_NAME);
-                
-                IsResetEventAlreadyExists = true;
-            }
-            catch
-            {
-                IsResetEventAlreadyExists = false;
-            }
-
             new Program(new MockHost()).Go(args);
         }
 
-        private const string WAIT_HANDLE_NAME = "Global\\NancyAppHost.8888";
+        private EventWaitHandle _abortEvent;
+        private BaseAppHost _httpHost;
+        private bool _isVerboseExceptions;
+        private bool _isSut;
 
-        private static EventWaitHandle ResetEvent;
-        private static BaseAppHost HttpHost;
-        private static bool? IsResetEventAlreadyExists;
-
-        private bool _isVerboseExceptions = false;
-        private bool _isSut = false;
-
-        internal virtual bool IsRunning
-        {
-            get
-            {
-                return IsResetEventAlreadyExists.Value;
-            }
-        }
-        
         public Program(BaseAppHost httpHost)
         {
-            HttpHost = httpHost;
+            _httpHost = httpHost;
         }
 
         internal Program(BaseAppHost httpHost, bool isSystemUnderTest = false)
             : this(httpHost)
         {
             _isSut = isSystemUnderTest;
-            
-            // while SUT mock IsRunnig property which defines desired behavior
-            IsResetEventAlreadyExists = false;
         }
 
         public void Go(string[] args)
         {
-            ResetEvent = _isSut ? null : new EventWaitHandle(false, EventResetMode.AutoReset, WAIT_HANDLE_NAME);
+            _abortEvent = _isSut ? null : new ManualResetEvent(false);
 
             Parser.Run(args, this);
         }
@@ -64,45 +38,30 @@
         partial void Run(int port)
         {
             Console.WriteLine("Running HTTP listener on {0} port...", port);
-            Console.WriteLine("Use \"abort\" command line switch for terminating (i.e. NancyAppHost.exe abort)");
+            Console.WriteLine("Use Ctrl+C for terminating");
 
-            if (IsRunning)
-                throw new InvalidOperationException("HTTP listener already runned");
-
-            StrartHttpListenerInSeparateThread(port);
-
-            if (!_isSut)
+            RunInSeparateThread(delegate
             {
-                ResetEvent.WaitOne();
-                ResetEvent.Dispose();
-            }
-            Console.WriteLine("HTTP listener is aborted.");
+                _httpHost.StartNancyHost(port);
+            });
+
+            if (_isSut)
+                return;
+
+            _abortEvent.WaitOne();
         }
 
-        private void StrartHttpListenerInSeparateThread(int port)
+        private void RunInSeparateThread(Action action)
         {
+            if (_isSut)
+            {
+                action();
+                return;
+            }
+
             Task.Factory
-                .StartNew(delegate
-                {
-                    HttpHost.StartHttpListener(port);
-                }
-                , TaskCreationOptions.LongRunning)
+                .StartNew(action, TaskCreationOptions.LongRunning)
                 .Wait();
-        }
-
-        partial void Abort()
-        {
-            if (!IsRunning)
-                throw new InvalidOperationException("HTTP listener is not runned");
-
-            Console.WriteLine("Trying abort HTTP listener...");
-            
-            HttpHost.TerminateHttpListener();
-
-            if (!_isSut)
-            {
-                ResetEvent.Set();
-            }
         }
 
         partial void VerboseExceptions()
@@ -112,7 +71,11 @@
 
         partial void HandleError(ExceptionContext context)
         {
-            context.ReThrow = _isSut;
+            if (_isSut)
+            {
+                context.ReThrow = _isSut;
+                return;
+            }
 
             Console.WriteLine("oops! :-`(");
             Console.WriteLine(_isVerboseExceptions ? context.Exception.ToString() : context.Exception.Message);

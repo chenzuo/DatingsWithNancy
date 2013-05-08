@@ -5,7 +5,7 @@
 
     public class MockHost : BaseAppHost
     {
-        public override async void StartHttpListener(int port)
+        public override async void StartNancyHost(int port)
         {
             Console.WriteLine("Using MockHost");
 
@@ -13,11 +13,6 @@
             {
                 throw new ApplicationException("Nooooooooooooooo...!");
             }
-        }
-
-        public override void TerminateHttpListener()
-        {
-            Console.WriteLine("Goodbye");
         }
 
         async Task<string> DoWork()
