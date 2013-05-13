@@ -12,7 +12,8 @@
             //new Program(new KatanaHost()).Go(args);
             //new Program(new NancySelfHost()).Go(args);
             //new Program(new FireflyHost()).Go(args);
-            new Program(new WcfHost()).Go(args);
+            //new Program(new WcfHost()).Go(args);
+            new Program(new NHttpHost()).Go(args);
         }
 
         private EventWaitHandle _abortEvent;
