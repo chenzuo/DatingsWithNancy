@@ -3,7 +3,7 @@
     using Microsoft.Owin.Hosting;
     using Owin;
 
-    public class KatanaHost : BaseAppHost
+    public sealed class KatanaHost : BaseAppHost
     {
         public override void StartNancyHost(int port)
         {

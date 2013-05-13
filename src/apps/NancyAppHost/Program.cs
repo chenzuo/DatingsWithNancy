@@ -9,7 +9,8 @@
     {
         public static void Main(string[] args)
         {
-            new Program(new KatanaHost()).Go(args);
+            //new Program(new KatanaHost()).Go(args);
+            new Program(new NancySelfHost()).Go(args);
         }
 
         private EventWaitHandle _abortEvent;

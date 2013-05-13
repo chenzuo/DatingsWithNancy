@@ -73,6 +73,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\lib\packages\Nancy.0.17.1\lib\net40\Nancy.dll</HintPath>
     </Reference>
+    <Reference Include="Nancy.Hosting.Self">
+      <HintPath>..\..\..\lib\packages\Nancy.Hosting.Self.0.17.1\lib\net40\Nancy.Hosting.Self.dll</HintPath>
+    </Reference>
     <Reference Include="Nancy.Owin, Version=0.17.1.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\lib\packages\Nancy.Owin.0.17.1\lib\net40\Nancy.Owin.dll</HintPath>
@@ -87,7 +90,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseAppHost.cs" />
-    <Compile Include="KatanaHost.cs" />
+    <Compile Include="Hosts\KatanaHost.cs" />
+    <Compile Include="Hosts\NancySelfHost.cs" />
     <Compile Include="Program.CLAP.cs">
       <DependentUpon>Program.cs</DependentUpon>
     </Compile>
