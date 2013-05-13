@@ -2,6 +2,7 @@
 {
     using System;
     using FluentAssertions;
+    using Nancy;
     using Nancy.Bootstrapper;
     using NSubstitute;
     using Xunit;
@@ -9,11 +10,14 @@
     public class BaseAppHostTests
     {
         [Fact]
-        void BaseAppHost_Bootstrapper_Property_Should_Return_Null_When_Type_Is_Undefined_Or_Not_Found()
+        void BaseAppHost_Bootstrapper_Property_Should_Return_DefaultNancyBootstrapper_When_Type_Is_Undefined_Or_Not_Found()
         {
             var httpHost = Substitute.For<BaseAppHost>();
 
-            httpHost.Bootstrapper.Should().BeNull();
+            httpHost.Bootstrapper.Should()
+                .NotBeNull()
+                .And
+                .BeOfType<DefaultNancyBootstrapper>();
         }
 
         [Fact]

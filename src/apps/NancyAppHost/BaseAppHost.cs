@@ -3,6 +3,7 @@
     using System;
     using System.Configuration;
     using System.Linq;
+    using Nancy;
     using Nancy.Bootstrapper;
 
     public abstract class BaseAppHost
@@ -20,7 +21,7 @@
                 }
                 catch
                 {
-                    return null;
+                    return new DefaultNancyBootstrapper();
                 }
             }
         }
