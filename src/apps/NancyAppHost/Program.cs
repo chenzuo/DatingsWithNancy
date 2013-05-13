@@ -9,11 +9,7 @@
     {
         public static void Main(string[] args)
         {
-            //new Program(new KatanaHost()).Go(args);
-            //new Program(new NancySelfHost()).Go(args);
-            //new Program(new FireflyHost()).Go(args);
-            //new Program(new WcfHost()).Go(args);
-            new Program(new NHttpHost()).Go(args);
+            new Program().Go(args);
         }
 
         private EventWaitHandle _abortEvent;
@@ -21,14 +17,15 @@
         private bool _isVerboseExceptions;
         private bool _isSut;
 
-        public Program(BaseAppHost httpHost)
+        internal SupportedHosts NancyHost
         {
-            _httpHost = httpHost;
+            get;
+            private set;
         }
 
-        internal Program(BaseAppHost httpHost, bool isSystemUnderTest = false)
-            : this(httpHost)
+        internal Program(BaseAppHost httpHost = null, bool isSystemUnderTest = false)
         {
+            _httpHost = httpHost;
             _isSut = isSystemUnderTest;
         }
 
@@ -38,10 +35,17 @@
 
             Parser.Run(args, this);
         }
-
-        partial void Run(int port)
+        
+        partial void Run(int port, SupportedHosts host)
         {
-            Console.WriteLine("Running HTTP listener on {0} port...", port);
+            if (_isSut)
+            {
+                NancyHost = host;
+            }
+
+            _httpHost = _httpHost ?? host.ResolveHostInstance();
+
+            Console.WriteLine("Running {0} on {1} port...", host, port);
             Console.WriteLine("Use Ctrl+C for terminating");
 
             RunInSeparateThread(delegate

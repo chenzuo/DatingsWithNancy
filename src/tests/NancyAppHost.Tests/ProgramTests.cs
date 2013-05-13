@@ -47,5 +47,28 @@
                 .Received(1)
                 .StartNancyHost(Arg.Is(1234));
         }
+
+        [Fact]
+        void Program_Default_Http_Host_Is_Katana()
+        {
+            var httpHost = Substitute.For<BaseAppHost>();
+            var program = Substitute.For<Program>(httpHost, true);
+
+            program.Go("run".Split());
+
+            program.NancyHost.Should().Be(SupportedHosts.Katana);
+        }
+
+        [Fact]
+        void Program_Should_Throw_Exception_When_Used_Unsupported_Nancy_Host()
+        {
+            var httpHost = Substitute.For<BaseAppHost>();
+            var program = Substitute.For<Program>(httpHost, true);
+
+            Action act = () => program.Go("run -host=Drabadan".Split());
+
+            act.ShouldThrow<Exception>()
+                .Where(ex => ex.Message.Contains("'Drabadan' cannot be converted to NancyAppHost.SupportedHosts"));
+        }
     }
 }

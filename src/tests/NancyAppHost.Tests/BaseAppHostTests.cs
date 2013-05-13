@@ -27,15 +27,12 @@
 
             httpHost
                 .GetFirstTypeNameFromConfiguration()
-                .Returns(_ =>
-                {
-                    var typeFullname = typeof(NancyBootstrapperDouble).FullName;
-                    var assemblyFullname = typeof(NancyBootstrapperDouble).Assembly.FullName;
+                .Returns(typeof(NancyBootstrapperDouble).AssemblyQualifiedName);
 
-                    return String.Format("{0}, {1}", typeFullname, assemblyFullname);
-                });
-
-            httpHost.Bootstrapper.Should().NotBeNull().And.BeAssignableTo<INancyBootstrapper>();
+            httpHost.Bootstrapper.Should()
+                .NotBeNull()
+                .And
+                .BeAssignableTo<INancyBootstrapper>();
         }
 
         #region Test Doubles

@@ -108,6 +108,7 @@
     <Compile Include="Hosts\KatanaHost.cs" />
     <Compile Include="Hosts\NancySelfHost.cs" />
     <Compile Include="Hosts\NHttpHost.cs" />
+    <Compile Include="Hosts\SupportedHosts.cs" />
     <Compile Include="Hosts\WcfHost.cs" />
     <Compile Include="Program.CLAP.cs">
       <DependentUpon>Program.cs</DependentUpon>
