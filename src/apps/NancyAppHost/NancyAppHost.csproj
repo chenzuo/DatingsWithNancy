@@ -79,6 +79,9 @@
     <Reference Include="Nancy.Hosting.Self">
       <HintPath>..\..\..\lib\packages\Nancy.Hosting.Self.0.17.1\lib\net40\Nancy.Hosting.Self.dll</HintPath>
     </Reference>
+    <Reference Include="Nancy.Hosting.Wcf">
+      <HintPath>..\..\..\lib\packages\Nancy.Hosting.Wcf.0.17.1\lib\net40\Nancy.Hosting.Wcf.dll</HintPath>
+    </Reference>
     <Reference Include="Nancy.Owin, Version=0.17.1.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\lib\packages\Nancy.Owin.0.17.1\lib\net40\Nancy.Owin.dll</HintPath>
@@ -90,12 +93,15 @@
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.configuration" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Web" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseAppHost.cs" />
     <Compile Include="Hosts\FireflyHost.cs" />
     <Compile Include="Hosts\KatanaHost.cs" />
     <Compile Include="Hosts\NancySelfHost.cs" />
+    <Compile Include="Hosts\WcfHost.cs" />
     <Compile Include="Program.CLAP.cs">
       <DependentUpon>Program.cs</DependentUpon>
     </Compile>
@@ -120,7 +126,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

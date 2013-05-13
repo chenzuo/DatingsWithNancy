@@ -15,7 +15,7 @@
                 try
                 {
                     var typeName = GetFirstTypeNameFromConfiguration();
-                    var type = Type.GetType(typeName, false);
+                    var type = Type.GetType(typeName, false, false);
 
                     return Activator.CreateInstance(type) as INancyBootstrapper;
                 }
