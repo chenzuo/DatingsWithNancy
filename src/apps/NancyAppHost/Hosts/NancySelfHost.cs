@@ -7,7 +7,7 @@
     {
         public override void StartNancyHost(int port)
         {
-            var uri = new Uri(string.Format("http://localhost:{0}", port));
+            var uri = new Uri(string.Format("http://127.0.0.1:{0}/", port));
             
             new NancyHost(Bootstrapper, uri).Start();
         }

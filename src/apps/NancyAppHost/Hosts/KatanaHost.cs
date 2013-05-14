@@ -7,7 +7,9 @@
     {
         public override void StartNancyHost(int port)
         {
-            WebApplication.Start(port, app => app.UseNancy(Bootstrapper));
+            var url = string.Format("http://127.0.0.1:{0}/", port);
+
+            WebApplication.Start(url, app => app.UseNancy(Bootstrapper));
         }
     }
 }

@@ -103,7 +103,7 @@
     <Reference Include="System.ServiceModel.Web" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BaseAppHost.cs" />
+    <Compile Include="Hosts\BaseAppHost.cs" />
     <Compile Include="Hosts\FireflyHost.cs" />
     <Compile Include="Hosts\KatanaHost.cs" />
     <Compile Include="Hosts\NancySelfHost.cs" />
@@ -134,9 +134,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
