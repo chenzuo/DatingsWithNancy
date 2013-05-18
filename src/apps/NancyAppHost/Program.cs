@@ -12,6 +12,8 @@
             new Program().Go(args);
         }
 
+        const int HTTP_LISTENER_DEFAULT_PORT = 8888;
+        
         private EventWaitHandle _abortEvent;
         private BaseAppHost _httpHost;
         private bool _isVerboseExceptions;
@@ -35,8 +37,8 @@
 
             Parser.Run(args, this);
         }
-        
-        partial void Run(int port, SupportedHosts host)
+
+        partial void Run([DefaultValue(HTTP_LISTENER_DEFAULT_PORT)]int port, [DefaultValue(SupportedHosts.Katana)]SupportedHosts host)
         {
             if (_isSut)
             {
